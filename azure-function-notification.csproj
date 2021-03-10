@@ -5,6 +5,7 @@
     <RootNamespace>azure_function_notification</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Google.Apis" Version="1.50.0" />
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.11" />
   </ItemGroup>
   <ItemGroup>
@@ -14,6 +15,9 @@
     <None Update="local.settings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="client_secrets.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 </Project>
