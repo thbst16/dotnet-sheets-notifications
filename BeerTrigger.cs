@@ -8,16 +8,38 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Google.Apis.Sheets.v4;
+using Google.Apis.Auth.OAuth2;
 
 namespace com.beckshome.function
 {
     public static class BeerTrigger
     {
+        static readonly string[] Scopes = { SheetsService.Scope.Spreadsheets };
+        static readonly string ApplicationName = "BeckTest";
+        static readonly string SpreadsheetId = "1KxE0mHeRoL5T7j1UBfNjXPKyPVW3OvrWsesHsn5xHjQ";
+        static readonly string sheet = "congress";
+        static SheetsService service;
+        
         [FunctionName("HelloTrigger")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
             HttpRequest req, ILogger log)
         {
+            GoogleCredential credential;
+            using (var stream = new FileStream("client_secrets.json", FileMode.Open, FileAccess.Read))
+            {
+                credential = GoogleCredential.FromStream(stream)
+                    .CreateScoped(Scopes);
+            }
+
+            service = new SheetsService(new Google.Apis.Services.BaseClientService.Initializer(){
+                HttpClientInitializer = credential,
+                ApplicationName = ApplicationName
+            });
+            
+            
+
             log.LogInformation("C# HTTP trigger function processed a request.");
 
             string name = req.Query["name"];
