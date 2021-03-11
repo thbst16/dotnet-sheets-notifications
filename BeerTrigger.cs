@@ -57,7 +57,7 @@ namespace com.beckshome.function
         }
 
         static String ReadEntries(){
-            var range = $"{sheet}!E3:F3";
+            var range = $"{sheet}!E5:F5";
             var request = service.Spreadsheets.Values.Get(SpreadsheetId, range);
 
             var response = request.Execute();
@@ -67,8 +67,8 @@ namespace com.beckshome.function
             {
                 foreach(var row in values)
                 {
-                    sb.Append(row[2]);
                     sb.Append(row[1]);
+                    sb.Append(row[0]);
                 }
                 return(sb.ToString());
             }
