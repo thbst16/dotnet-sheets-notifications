@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -37,8 +38,6 @@ namespace com.beckshome.function
                 HttpClientInitializer = credential,
                 ApplicationName = ApplicationName
             });
-            
-            
 
             log.LogInformation("C# HTTP trigger function processed a request.");
 
@@ -53,8 +52,30 @@ namespace com.beckshome.function
             name = name ?? data?.name;
             
             return name != null
-                ? (ActionResult)new OkObjectResult($"Hello, {name}")
+                ? (ActionResult)new OkObjectResult(ReadEntries())
                 : new BadRequestObjectResult("Please pass a name on the query string or in the request body");
+        }
+
+        static String ReadEntries(){
+            var range = $"{sheet}!E3:F3";
+            var request = service.Spreadsheets.Values.Get(SpreadsheetId, range);
+
+            var response = request.Execute();
+            var values = response.Values;
+            StringBuilder sb = new StringBuilder();
+            if (values != null && values.Count > 0)
+            {
+                foreach(var row in values)
+                {
+                    sb.Append(row[2]);
+                    sb.Append(row[1]);
+                }
+                return(sb.ToString());
+            }
+            else
+            {
+                return("No data found");
+            }
         }
         
         /*
