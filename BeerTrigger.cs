@@ -54,6 +54,8 @@ namespace com.beckshome.function
             name = name ?? data?.name;
 
             CreateEntry();
+            System.Threading.Thread.Sleep(1000);
+            UpdateEntry();
             
             return name != null
                 ? (ActionResult)new OkObjectResult(ReadEntries())
@@ -93,6 +95,19 @@ namespace com.beckshome.function
             var appendRequest = service.Spreadsheets.Values.Append(valueRange, SpreadsheetId, range);
             appendRequest.ValueInputOption = SpreadsheetsResource.ValuesResource.AppendRequest.ValueInputOptionEnum.USERENTERED;
             var appendResponse = appendRequest.Execute();
+        }
+
+        static void UpdateEntry()
+        {
+            var range = $"{sheet}!D543";
+            var valueRange = new ValueRange();
+
+            var objectList = new List<object>() { "updated" };
+            valueRange.Values = new List<IList<object>> { objectList };
+
+            var updateRequest = service.Spreadsheets.Values.Update(valueRange, SpreadsheetId, range);
+            updateRequest.ValueInputOption = SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum.USERENTERED;
+            var updateResponse = updateRequest.Execute();
         }
         
         /*
