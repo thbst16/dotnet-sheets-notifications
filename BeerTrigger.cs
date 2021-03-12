@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Text;
@@ -9,8 +10,9 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using Google.Apis.Sheets.v4;
 using Google.Apis.Auth.OAuth2;
+using Google.Apis.Sheets.v4;
+using Google.Apis.Sheets.v4.Data;
 
 namespace com.beckshome.function
 {
@@ -50,6 +52,8 @@ namespace com.beckshome.function
             }
             dynamic data = JsonConvert.DeserializeObject(requestBody);
             name = name ?? data?.name;
+
+            CreateEntry();
             
             return name != null
                 ? (ActionResult)new OkObjectResult(ReadEntries())
@@ -76,6 +80,19 @@ namespace com.beckshome.function
             {
                 return("No data found");
             }
+        }
+
+        static void CreateEntry()
+        {
+            var range = $"{sheet}!A:F";
+            var valueRange = new ValueRange();
+
+            var objectList = new List<object>() {"Hello!", "This", "was", "inserted", "via", "C#"};
+            valueRange.Values = new List<IList<object>> {objectList};
+
+            var appendRequest = service.Spreadsheets.Values.Append(valueRange, SpreadsheetId, range);
+            appendRequest.ValueInputOption = SpreadsheetsResource.ValuesResource.AppendRequest.ValueInputOptionEnum.USERENTERED;
+            var appendResponse = appendRequest.Execute();
         }
         
         /*
