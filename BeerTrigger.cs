@@ -109,6 +109,15 @@ namespace com.beckshome.function
             updateRequest.ValueInputOption = SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum.USERENTERED;
             var updateResponse = updateRequest.Execute();
         }
+
+        static void DeleteEntry()
+        {
+            var range = $"{sheet}!A543:F";
+            var requestBody = new ClearValuesRequest();
+
+            var deleteRequest = service.Spreadsheets.Values.Clear(requestBody, SpreadsheetId, range);
+            var deleteResponse = deleteRequest.Execute();
+        }
         
         /*
         [FunctionName("BeerTrigger")]
