@@ -13,14 +13,16 @@ namespace com.beckshome.function
 {
     public static class GoogleSheetTrigger
     {
+        // Static values bound to the specific Google Sheet and Tab
         static readonly string[] Scopes = { SheetsService.Scope.Spreadsheets };
         static readonly string ApplicationName = "NotificationTriggers";
         static readonly string SpreadsheetId = "187QFg9LDDsBYxsRs1ON3xHJLr_4viFOyE8C3GOwLnNI";
         static readonly string sheet = "TriggerList";
         static SheetsService service;
         
+        // Azure trigger function to access Google sheets and process triggers
         [FunctionName("GoogleSheetTrigger")]
-        public static void Run([TimerTrigger("*/60 * * * * *")]TimerInfo myTimer, ILogger log)
+        public static void Run([TimerTrigger("*/30 * * * * *")]TimerInfo myTimer, ILogger log)
         {
             log.LogInformation($"Google Sheets Trigger executed at: {DateTime.Now}");
 
@@ -37,38 +39,24 @@ namespace com.beckshome.function
             });
 
             log.LogInformation("************************************************");
-            //CreateEntry();
-            //log.LogInformation($"New Google Sheet row created at: {DateTime.Now}");
-            //System.Threading.Thread.Sleep(1000);
-            //UpdateEntry();
-            //log.LogInformation($"Google Sheet row updated at: {DateTime.Now}");
-            log.LogInformation($"Google Sheet row read -- value: " + ReadEntries());
+            log.LogInformation(ProcessTriggers());
             log.LogInformation("************************************************");
         }
 
-        static String ReadEntries(){
+        static String ProcessTriggers(){
             var range = $"{sheet}";
             var request = service.Spreadsheets.Values.Get(SpreadsheetId, range);
 
             var response = request.Execute();
             var values = response.Values;
+
             StringBuilder sb = new StringBuilder();
             if (values != null && values.Count > 0)
             {
                 foreach(var (row, index) in values.WithIndex())
                 {
-                    sb.Append("\n");
-                    sb.Append(row[0]);
-                    sb.Append(" | ");
-                    sb.Append(row[1]);
-                    sb.Append(" | ");
-                    sb.Append(row[2]);
-                    sb.Append(" | ");
-                    sb.Append(row[3]);
-                    sb.Append(" | ");
-                    sb.Append(row[4]);
-                    sb.Append(" | ");
-                    sb.Append(row[5]);
+                    sb.Append($"\n {row[0]} | {row[1]} | {row[2]} | {row[3]} | {row[4]} | {row[5]}");
+                    // Conditional logic: (1) not header; (2) today; (3) in past; (4) not yet processed
                     if (
                             row[0].ToString().ToUpper() != "DATE" &&
                             DateTime.Parse(row[0].ToString()).Date == DateTime.Now.Date &&
@@ -76,15 +64,10 @@ namespace com.beckshome.function
                             row[5].ToString().ToUpper() == "FALSE"
                         )
                     {
-                        sb.Append("\n");
-                        sb.Append("==> ");
-                        sb.Append(row[2]);
-                        sb.Append(" to ");
-                        sb.Append(row[3]);
-                        sb.Append($"; index = {sheet}!F");
-                        sb.Append(index+1);
+                        sb.Append($"\n*** {row[2]} to {row[3]} ***");
+                        // Set update row cell and call update function
                         string updater = $"{sheet}!F" + (index+1);
-                        UpdateEntry(updater);
+                        UpdateProcessedTime(updater);
                     }
                 }
                 return(sb.ToString());
@@ -95,44 +78,22 @@ namespace com.beckshome.function
             }
         }
 
+        // Small extension function to allow indexing within foreach statement
         public static IEnumerable<(T item, int index)> WithIndex<T>(this IEnumerable<T> self)       
             => self.Select((item, index) => (item, index));   
 
-        static void CreateEntry()
+        // Marks the specified row (cell) with the current time as processed
+        static void UpdateProcessedTime(string rowToUpdate)
         {
-            var range = $"{sheet}!A:F";
+            var range = rowToUpdate;
             var valueRange = new ValueRange();
 
-            var objectList = new List<object>() {"Hello!", "This", "was", "inserted", "at", DateTime.Now.ToLocalTime()};
-            valueRange.Values = new List<IList<object>> {objectList};
-
-            var appendRequest = service.Spreadsheets.Values.Append(valueRange, SpreadsheetId, range);
-            appendRequest.ValueInputOption = SpreadsheetsResource.ValuesResource.AppendRequest.ValueInputOptionEnum.USERENTERED;
-            var appendResponse = appendRequest.Execute();
-        }
-
-        static void UpdateEntry(string updateRange)
-        {
-            //var range = $"{sheet}!D543";
-            var range = updateRange;
-            var valueRange = new ValueRange();
-
-            //var objectList = new List<object>() { "updated" };
             var objectList = new List<object>() { DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt") };
             valueRange.Values = new List<IList<object>> { objectList };
 
             var updateRequest = service.Spreadsheets.Values.Update(valueRange, SpreadsheetId, range);
             updateRequest.ValueInputOption = SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum.USERENTERED;
             var updateResponse = updateRequest.Execute();
-        }
-
-        static void DeleteEntry()
-        {
-            var range = $"{sheet}!A543:F";
-            var requestBody = new ClearValuesRequest();
-
-            var deleteRequest = service.Spreadsheets.Values.Clear(requestBody, SpreadsheetId, range);
-            var deleteResponse = deleteRequest.Execute();
         }
     }
 }
