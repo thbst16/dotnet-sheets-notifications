@@ -81,8 +81,10 @@ namespace com.beckshome.function
                         sb.Append(row[2]);
                         sb.Append(" to ");
                         sb.Append(row[3]);
-                        sb.Append("; index = F");
+                        sb.Append($"; index = {sheet}!F");
                         sb.Append(index+1);
+                        string updater = $"{sheet}!F" + (index+1);
+                        UpdateEntry(updater);
                     }
                 }
                 return(sb.ToString());
@@ -109,12 +111,14 @@ namespace com.beckshome.function
             var appendResponse = appendRequest.Execute();
         }
 
-        static void UpdateEntry()
+        static void UpdateEntry(string updateRange)
         {
-            var range = $"{sheet}!D543";
+            //var range = $"{sheet}!D543";
+            var range = updateRange;
             var valueRange = new ValueRange();
 
-            var objectList = new List<object>() { "updated" };
+            //var objectList = new List<object>() { "updated" };
+            var objectList = new List<object>() { DateTime.Now.ToLocalTime() };
             valueRange.Values = new List<IList<object>> { objectList };
 
             var updateRequest = service.Spreadsheets.Values.Update(valueRange, SpreadsheetId, range);
