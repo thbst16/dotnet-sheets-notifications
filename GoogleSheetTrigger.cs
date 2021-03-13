@@ -13,9 +13,9 @@ namespace com.beckshome.function
     public static class GoogleSheetTrigger
     {
         static readonly string[] Scopes = { SheetsService.Scope.Spreadsheets };
-        static readonly string ApplicationName = "BeckTest";
-        static readonly string SpreadsheetId = "1KxE0mHeRoL5T7j1UBfNjXPKyPVW3OvrWsesHsn5xHjQ";
-        static readonly string sheet = "congress";
+        static readonly string ApplicationName = "NotificationTriggers";
+        static readonly string SpreadsheetId = "187QFg9LDDsBYxsRs1ON3xHJLr_4viFOyE8C3GOwLnNI";
+        static readonly string sheet = "TriggerList";
         static SheetsService service;
         
         [FunctionName("GoogleSheetTrigger")]
@@ -36,11 +36,11 @@ namespace com.beckshome.function
             });
 
             log.LogInformation("************************************************");
-            CreateEntry();
-            log.LogInformation($"New Google Sheet row created at: {DateTime.Now}");
-            System.Threading.Thread.Sleep(1000);
-            UpdateEntry();
-            log.LogInformation($"Google Sheet row updated at: {DateTime.Now}");
+            //CreateEntry();
+            //log.LogInformation($"New Google Sheet row created at: {DateTime.Now}");
+            //System.Threading.Thread.Sleep(1000);
+            //UpdateEntry();
+            //log.LogInformation($"Google Sheet row updated at: {DateTime.Now}");
             log.LogInformation($"Google Sheet row read -- value: " + ReadEntries());
             log.LogInformation("************************************************");
         }
@@ -57,11 +57,15 @@ namespace com.beckshome.function
             {
                 foreach(var row in values)
                 {
-                    sb.Append(row[4]);
-                    sb.Append(", ");
-                    sb.Append(row[3]);
-                    sb.Append(", ");
+                    sb.Append(row[0]);
+                    sb.Append(" | ");
                     sb.Append(row[1]);
+                    sb.Append(" | ");
+                    sb.Append(row[2]);
+                    sb.Append(" | ");
+                    sb.Append(row[3]);
+                    sb.Append(" | ");
+                    sb.Append(row[4]);
                     sb.Append("\n");
                 }
                 return(sb.ToString());
