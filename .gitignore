@@ -4,7 +4,7 @@
 # Azure Functions localsettings file
 local.settings.json
 
-# Google Apps client secrets file
+# Google Applications client secrets file
 client_secrets.json
 
 # User-specific files
