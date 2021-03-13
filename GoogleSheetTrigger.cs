@@ -66,6 +66,8 @@ namespace com.beckshome.function
                     sb.Append(row[3]);
                     sb.Append(" | ");
                     sb.Append(row[4]);
+                    sb.Append(" | ");
+                    sb.Append(row[5]);
                     sb.Append("\n");
                 }
                 return(sb.ToString());
