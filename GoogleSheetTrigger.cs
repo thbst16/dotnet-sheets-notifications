@@ -56,6 +56,7 @@ namespace com.beckshome.function
             {
                 foreach(var row in values)
                 {
+                    sb.Append("\n");
                     sb.Append(row[0]);
                     sb.Append(" | ");
                     sb.Append(row[1]);
@@ -67,13 +68,18 @@ namespace com.beckshome.function
                     sb.Append(row[4]);
                     sb.Append(" | ");
                     sb.Append(row[5]);
-                    sb.Append("\n");
-                    if (row[5].ToString().ToUpper() == "FALSE")
+                    if (
+                            row[0].ToString().ToUpper() != "DATE" &&
+                            DateTime.Parse(row[0].ToString()).Date == DateTime.Now.Date &&
+                            DateTime.Parse(row[1].ToString()).TimeOfDay < DateTime.Now.TimeOfDay &&
+                            row[5].ToString().ToUpper() == "FALSE"
+                        )
                     {
+                        sb.Append("\n");
+                        sb.Append("==> ");
                         sb.Append(row[2]);
                         sb.Append(" to ");
                         sb.Append(row[3]);
-                        sb.Append("\n");
                     }
                 }
                 return(sb.ToString());
