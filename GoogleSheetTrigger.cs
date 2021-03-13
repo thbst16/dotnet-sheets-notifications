@@ -118,7 +118,7 @@ namespace com.beckshome.function
             var valueRange = new ValueRange();
 
             //var objectList = new List<object>() { "updated" };
-            var objectList = new List<object>() { DateTime.Now.ToLocalTime() };
+            var objectList = new List<object>() { DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt") };
             valueRange.Values = new List<IList<object>> { objectList };
 
             var updateRequest = service.Spreadsheets.Values.Update(valueRange, SpreadsheetId, range);
