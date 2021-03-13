@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
@@ -54,7 +55,7 @@ namespace com.beckshome.function
             StringBuilder sb = new StringBuilder();
             if (values != null && values.Count > 0)
             {
-                foreach(var row in values)
+                foreach(var (row, index) in values.WithIndex())
                 {
                     sb.Append("\n");
                     sb.Append(row[0]);
@@ -80,6 +81,8 @@ namespace com.beckshome.function
                         sb.Append(row[2]);
                         sb.Append(" to ");
                         sb.Append(row[3]);
+                        sb.Append("; index = F");
+                        sb.Append(index+1);
                     }
                 }
                 return(sb.ToString());
@@ -89,6 +92,9 @@ namespace com.beckshome.function
                 return("No data found");
             }
         }
+
+        public static IEnumerable<(T item, int index)> WithIndex<T>(this IEnumerable<T> self)       
+            => self.Select((item, index) => (item, index));   
 
         static void CreateEntry()
         {
