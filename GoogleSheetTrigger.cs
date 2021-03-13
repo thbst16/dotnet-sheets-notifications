@@ -46,7 +46,6 @@ namespace com.beckshome.function
         }
 
         static String ReadEntries(){
-            //var range = $"{sheet}!E5:F5";
             var range = $"{sheet}";
             var request = service.Spreadsheets.Values.Get(SpreadsheetId, range);
 
@@ -69,6 +68,13 @@ namespace com.beckshome.function
                     sb.Append(" | ");
                     sb.Append(row[5]);
                     sb.Append("\n");
+                    if (row[5].ToString().ToUpper() == "FALSE")
+                    {
+                        sb.Append(row[2]);
+                        sb.Append(" to ");
+                        sb.Append(row[3]);
+                        sb.Append("\n");
+                    }
                 }
                 return(sb.ToString());
             }
