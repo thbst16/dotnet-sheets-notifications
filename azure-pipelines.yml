@@ -38,7 +38,7 @@ stages:
         
     - task: CopyFiles@1
       inputs:
-        Contents: '$(client_secrets.secureFilePath)/**' 
+        Contents: $(Agent.TempDirectory)/client_secrets.json 
         TargetFolder: '$(Build.SourcesDirectory)'
         
     - task: DotNetCoreCLI@2
