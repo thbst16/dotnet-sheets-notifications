@@ -8,6 +8,8 @@ using Microsoft.Extensions.Logging;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Sheets.v4;
 using Google.Apis.Sheets.v4.Data;
+using SendGrid;
+using SendGrid.Helpers.Mail;
 using Twilio;
 using Twilio.Rest.Api.V2010.Account;
 
@@ -100,13 +102,16 @@ namespace com.beckshome.function
             var updateResponse = updateRequest.Execute();
         }
 
+        // Send communications via Twilio API and return the completed communication SID
         static string SendCommunication(string type, string destination, string message)
         {
             string accountSid = Environment.GetEnvironmentVariable("TWILIO_ACCOUNT_SID");
             string authToken = Environment.GetEnvironmentVariable("TWILIO_AUTH_TOKEN");
             string phoneNumber = Environment.GetEnvironmentVariable("TWILIO_NUMBER");
+            string sendGridKey = Environment.GetEnvironmentVariable("SENDGRID_API_KEY");
 
             TwilioClient.Init(accountSid, authToken);
+            var sendGridClient = new SendGridClient(sendGridKey);
 
             if (type.ToUpper() == "SMS")
             {
@@ -116,6 +121,26 @@ namespace com.beckshome.function
                     to: new Twilio.Types.PhoneNumber(destination)
                 );
                 return msg.Sid;
+            }
+            else if (type.ToUpper() == "PHONE")
+            {
+                var call = CallResource.Create(
+                    twiml: new Twilio.Types.Twiml($"<Response><Say>{message}</Say></Response>"),
+                    to: new Twilio.Types.PhoneNumber(destination),
+                    from: new Twilio.Types.PhoneNumber(phoneNumber)
+                );
+                return call.Sid;
+            }
+            else if (type.ToUpper() == "EMAIL")
+            {
+                var from = new EmailAddress("thomas@beckshome.com", "Thomas Beck");
+                var subject = "Automated Trigger Message";
+                var to = new EmailAddress("thbeck@deloitte.com", "Thomas Beck");
+                var plainTextContent = message;
+                var htmlContent = message;
+                var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+                sendGridClient.SendEmailAsync(msg);
+                return "Email";
             }
             else
             {
