@@ -20,14 +20,15 @@ namespace com.beckshome.function
         // Static values bound to the specific Google Sheet and Tab
         static readonly string[] Scopes = { SheetsService.Scope.Spreadsheets };
         static readonly string ApplicationName = "NotificationTriggers";
-        static readonly string SpreadsheetId = "187QFg9LDDsBYxsRs1ON3xHJLr_4viFOyE8C3GOwLnNI";
         static readonly string sheet = "TriggerList";
         static SheetsService service;
         
         // Azure trigger function to access Google sheets and process triggers
         [FunctionName("GoogleSheetTrigger")]
-        public static void Run([TimerTrigger("*/30 * * * * *")]TimerInfo myTimer, ILogger log)
+        public static void Run([TimerTrigger("*/60 * * * * *")]TimerInfo myTimer, ILogger log)
         {
+            string SpreadsheetId = Environment.GetEnvironmentVariable("SPREADSHEET_ID");
+            
             log.LogInformation($"Google Sheets Trigger executed at: {DateTime.Now}");
 
             GoogleCredential credential;
@@ -43,11 +44,11 @@ namespace com.beckshome.function
             });
 
             log.LogInformation("************************************************");
-            log.LogInformation(ProcessTriggers());
+            log.LogInformation(ProcessTriggers(SpreadsheetId));
             log.LogInformation("************************************************");
         }
 
-        static String ProcessTriggers(){
+        static String ProcessTriggers(string SpreadsheetId){
             var range = $"{sheet}";
             var request = service.Spreadsheets.Values.Get(SpreadsheetId, range);
 
@@ -73,7 +74,7 @@ namespace com.beckshome.function
                         string sid = SendCommunication(row[2].ToString(), row[3].ToString(), row[4].ToString());
                         // Set update row cell and call update function
                         string updater = $"{sheet}!F" + (index+1);
-                        UpdateProcessedDetails(updater, sid);
+                        UpdateProcessedDetails(SpreadsheetId, updater, sid);
                     }
                 }
                 return(sb.ToString());
@@ -89,7 +90,7 @@ namespace com.beckshome.function
             => self.Select((item, index) => (item, index));   
 
         // Marks the specified row (cell) with the current time as processed
-        static void UpdateProcessedDetails(string rowToUpdate, string sid)
+        static void UpdateProcessedDetails(string SpreadsheetId, string rowToUpdate, string sid)
         {
             var range = rowToUpdate;
             var valueRange = new ValueRange();
