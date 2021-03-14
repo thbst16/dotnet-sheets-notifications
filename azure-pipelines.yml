@@ -31,6 +31,7 @@ stages:
 
     steps:
     - task: DownloadSecureFile@1
+      name: client_secrets
       displayName: 'Download Google Client Secrets'
       inputs:
         secureFile: 'client_secrets.json'
@@ -42,6 +43,11 @@ stages:
         projects: |
           $(workingDirectory)/*.csproj
         arguments: --output $(System.DefaultWorkingDirectory)/publish_output --configuration Release
+        
+    - task: CopyFiles@1
+      inputs:
+        SourceFolder: $(client_secrets.secureFilePath)
+        TargetFolder: $(System.DefaultWorkingDirectory)/publish_output
 
     - task: ArchiveFiles@2
       displayName: 'Archive files'
