@@ -36,6 +36,12 @@ stages:
       inputs:
         secureFile: 'client_secrets.json'
         
+    - task: CopyFiles@1
+      inputs:
+        SourceFolder: $(client_secrets.secureFilePath)
+        Contents: '**' 
+        TargetFolder: '$(Build.SourcesDirectory)'
+        
     - task: DotNetCoreCLI@2
       displayName: Build
       inputs:
