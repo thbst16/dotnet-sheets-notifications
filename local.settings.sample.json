@@ -1,0 +1,15 @@
+{
+    "IsEncrypted": false,
+    "Values": {
+      "AzureWebJobsStorage": "",
+      "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+      "SENDGRID_API_KEY": "",
+      "SENDGRID_FROM": "",
+      "SENDGRID_NAME": "",
+      "SENDGRID_TO": "",
+      "SPREADSHEET_ID": "",
+      "TWILIO_ACCOUNT_SID": "",
+      "TWILIO_AUTH_TOKEN": "",
+      "TWILIO_NUMBER": ""
+    }
+  }
