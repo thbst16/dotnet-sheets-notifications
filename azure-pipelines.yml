@@ -43,8 +43,9 @@ stages:
         
     - task: CopyFiles@2
       inputs:
-        Contents: $(Agent.TempDirectory)/client_secrets.json 
-        TargetFolder: $(workingDirectory)
+        SourceFolder: $(Agent.TempDirectory)
+        contents: '*' 
+        targetFolder: $(workingDirectory)
      
     - task: CmdLine@2
       inputs:
