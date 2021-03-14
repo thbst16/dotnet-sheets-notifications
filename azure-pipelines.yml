@@ -38,8 +38,8 @@ stages:
         
     - task: CopyFiles@1
       inputs:
-        SourceFolder: $(client_secrets.secureFilePath)
-        Contents: '**' 
+        SourceFolder: 
+        Contents: '$(client_secrets.secureFilePath)/**' 
         TargetFolder: '$(Build.SourcesDirectory)'
         
     - task: DotNetCoreCLI@2
@@ -49,12 +49,6 @@ stages:
         projects: |
           $(workingDirectory)/*.csproj
         arguments: --output $(System.DefaultWorkingDirectory)/publish_output --configuration Release
-        
-    - task: CopyFiles@1
-      inputs:
-        SourceFolder: $(client_secrets.secureFilePath)
-        Contents: '**' 
-        TargetFolder: '$(System.DefaultWorkingDirectory)/publish_output'
 
     - task: ArchiveFiles@2
       displayName: 'Archive files'
