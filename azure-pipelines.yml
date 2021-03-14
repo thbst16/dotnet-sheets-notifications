@@ -39,6 +39,7 @@ stages:
     - task: CopyFiles@1
       inputs:
         SourceFolder: $(client_secrets.secureFilePath)
+        Contents: '**' 
         TargetFolder: $(System.DefaultWorkingDirectory)/
 
     - task: DotNetCoreCLI@2
