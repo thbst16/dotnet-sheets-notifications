@@ -25,7 +25,7 @@ namespace com.beckshome.function
         
         // Azure trigger function to access Google sheets and process triggers
         [FunctionName("GoogleSheetTrigger")]
-        public static void Run([TimerTrigger("*/60 * * * * *")]TimerInfo myTimer, ILogger log)
+        public static void Run([TimerTrigger("* */5 * * * *")]TimerInfo myTimer, ILogger log)
         {
             string SpreadsheetId = Environment.GetEnvironmentVariable("SPREADSHEET_ID");
             
