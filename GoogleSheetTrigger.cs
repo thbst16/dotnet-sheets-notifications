@@ -68,10 +68,10 @@ namespace com.beckshome.function
                     {
                         sb.Append($"\n*** {row[2]} to {row[3]} ***");
                         // Call the communication function to send the communications
-                        SendCommunication(row[2].ToString(), row[3].ToString(), row[4].ToString());
+                        string sid = SendCommunication(row[2].ToString(), row[3].ToString(), row[4].ToString());
                         // Set update row cell and call update function
                         string updater = $"{sheet}!F" + (index+1);
-                        UpdateProcessedTime(updater);
+                        UpdateProcessedDetails(updater, sid);
                     }
                 }
                 return(sb.ToString());
@@ -87,12 +87,12 @@ namespace com.beckshome.function
             => self.Select((item, index) => (item, index));   
 
         // Marks the specified row (cell) with the current time as processed
-        static void UpdateProcessedTime(string rowToUpdate)
+        static void UpdateProcessedDetails(string rowToUpdate, string sid)
         {
             var range = rowToUpdate;
             var valueRange = new ValueRange();
 
-            var objectList = new List<object>() { DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt") };
+            var objectList = new List<object>() { DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt") + $" SID: {sid}"};
             valueRange.Values = new List<IList<object>> { objectList };
 
             var updateRequest = service.Spreadsheets.Values.Update(valueRange, SpreadsheetId, range);
