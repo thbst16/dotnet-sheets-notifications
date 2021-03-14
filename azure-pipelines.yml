@@ -40,7 +40,7 @@ stages:
       inputs:
         SourceFolder: $(client_secrets.secureFilePath)
         Contents: '**' 
-        TargetFolder: $(System.DefaultWorkingDirectory)/
+        TargetFolder: $(workingDirectory)/
 
     - task: DotNetCoreCLI@2
       displayName: Build
