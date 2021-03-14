@@ -8,6 +8,8 @@ using Microsoft.Extensions.Logging;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Sheets.v4;
 using Google.Apis.Sheets.v4.Data;
+using Twilio;
+using Twilio.Rest.Api.V2010.Account;
 
 namespace com.beckshome.function
 {
@@ -65,6 +67,8 @@ namespace com.beckshome.function
                         )
                     {
                         sb.Append($"\n*** {row[2]} to {row[3]} ***");
+                        // Call the communication function to send the communications
+                        SendCommunication(row[2].ToString(), row[3].ToString(), row[4].ToString());
                         // Set update row cell and call update function
                         string updater = $"{sheet}!F" + (index+1);
                         UpdateProcessedTime(updater);
@@ -94,6 +98,29 @@ namespace com.beckshome.function
             var updateRequest = service.Spreadsheets.Values.Update(valueRange, SpreadsheetId, range);
             updateRequest.ValueInputOption = SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum.USERENTERED;
             var updateResponse = updateRequest.Execute();
+        }
+
+        static string SendCommunication(string type, string destination, string message)
+        {
+            string accountSid = Environment.GetEnvironmentVariable("TWILIO_ACCOUNT_SID");
+            string authToken = Environment.GetEnvironmentVariable("TWILIO_AUTH_TOKEN");
+            string phoneNumber = Environment.GetEnvironmentVariable("TWILIO_NUMBER");
+
+            TwilioClient.Init(accountSid, authToken);
+
+            if (type.ToUpper() == "SMS")
+            {
+                var msg = MessageResource.Create(
+                    body: message,
+                    from: new Twilio.Types.PhoneNumber(phoneNumber),
+                    to: new Twilio.Types.PhoneNumber(destination)
+                );
+                return msg.Sid;
+            }
+            else
+            {
+                return "-1";
+            }
         }
     }
 }
