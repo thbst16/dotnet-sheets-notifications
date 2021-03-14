@@ -109,6 +109,9 @@ namespace com.beckshome.function
             string authToken = Environment.GetEnvironmentVariable("TWILIO_AUTH_TOKEN");
             string phoneNumber = Environment.GetEnvironmentVariable("TWILIO_NUMBER");
             string sendGridKey = Environment.GetEnvironmentVariable("SENDGRID_API_KEY");
+            string sendGridFrom= Environment.GetEnvironmentVariable("SENDGRID_FROM");
+            string sendGridTo = Environment.GetEnvironmentVariable("SENDGRID_TO");
+            string sendGridName = Environment.GetEnvironmentVariable("SENDGRID_NAME");
 
             TwilioClient.Init(accountSid, authToken);
             var sendGridClient = new SendGridClient(sendGridKey);
@@ -133,9 +136,9 @@ namespace com.beckshome.function
             }
             else if (type.ToUpper() == "EMAIL")
             {
-                var from = new EmailAddress("thomas@beckshome.com", "Thomas Beck");
+                var from = new EmailAddress(sendGridFrom, sendGridName);
                 var subject = "Automated Trigger Message";
-                var to = new EmailAddress("thbeck@deloitte.com", "Thomas Beck");
+                var to = new EmailAddress(sendGridTo, sendGridName);
                 var plainTextContent = message;
                 var htmlContent = message;
                 var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
