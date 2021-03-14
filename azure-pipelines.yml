@@ -30,6 +30,11 @@ stages:
       vmImage: $(vmImageName)
 
     steps:
+    - task: DownloadSecureFile@1
+      displayName: 'Download Google Client Secrets'
+      inputs:
+        secureFile: 'client_secrets.json'
+
     - task: DotNetCoreCLI@2
       displayName: Build
       inputs:
