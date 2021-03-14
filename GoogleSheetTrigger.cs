@@ -29,7 +29,7 @@ namespace com.beckshome.function
         {
             string SpreadsheetId = Environment.GetEnvironmentVariable("SPREADSHEET_ID");
             
-            log.LogInformation($"Google Sheets Trigger executed at: {DateTime.Now}");
+            log.LogInformation($"Googleclient Sheets Trigger executed at: {DateTime.Now}");
 
             GoogleCredential credential;
             using (var stream = new FileStream("client_secrets.json", FileMode.Open, FileAccess.Read))
