@@ -35,6 +35,11 @@ stages:
       displayName: 'Download Google Client Secrets'
       inputs:
         secureFile: 'client_secrets.json'
+    
+    - task: CmdLine@2
+      inputs:
+        script: dir
+        workingDirectory: $(Agent.TempDirectory)
         
     - task: CopyFiles@1
       inputs:
