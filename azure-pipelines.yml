@@ -41,7 +41,7 @@ stages:
         script: dir
         workingDirectory: $(Agent.TempDirectory)
         
-    - task: CopyFiles@1
+    - task: CopyFiles@2
       inputs:
         Contents: $(Agent.TempDirectory)/client_secrets.json 
         TargetFolder: $(workingDirectory)
