@@ -11,7 +11,7 @@ variables:
   azureSubscription: '7f1da9de-ca0e-4e95-b135-d8524ee0ffa5'
 
   # Function app name
-  functionAppName: 'ASP-azurefunctionnotification-a1be'
+  functionAppName: 'azure-function-notifiaction'
 
   # Agent VM image name
   vmImageName: 'vs2017-win2016'
