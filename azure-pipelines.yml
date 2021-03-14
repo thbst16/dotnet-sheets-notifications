@@ -38,7 +38,6 @@ stages:
         
     - task: CopyFiles@1
       inputs:
-        SourceFolder: 
         Contents: '$(client_secrets.secureFilePath)/**' 
         TargetFolder: '$(Build.SourcesDirectory)'
         
