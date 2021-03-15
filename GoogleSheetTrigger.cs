@@ -32,7 +32,7 @@ namespace com.beckshome.function
             log.LogInformation($"Googleclient Sheets Trigger executed at: {DateTime.Now}");
 
             GoogleCredential credential;
-            //using (var stream = new FileStream("client_secrets.json", FileMode.Open, FileAccess.Read))
+            // Need to use ExecutionContext to get the correct location for the file on the functions file system 
             using (var stream = new FileStream($"{Directory.GetParent(executionContext.FunctionDirectory).FullName}//client_secrets.json", FileMode.Open, FileAccess.Read))
             {
                 credential = GoogleCredential.FromStream(stream)
