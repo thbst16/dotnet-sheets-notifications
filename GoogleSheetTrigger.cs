@@ -22,10 +22,11 @@ namespace com.beckshome.function
         static readonly string ApplicationName = "NotificationTriggers";
         static readonly string sheet = "TriggerList";
         static SheetsService service;
+        static TimeZoneInfo estZone = TimeZoneConverter.TZConvert.GetTimeZoneInfo("Eastern Standard Time");
         
         // Azure trigger function to access Google sheets and process triggers
         [FunctionName("GoogleSheetTrigger")]
-        public static void Run([TimerTrigger("*/30 * * * * *")]TimerInfo myTimer, ILogger log, Microsoft.Azure.WebJobs.ExecutionContext executionContext)
+        public static void Run([TimerTrigger("0 * * * * *")]TimerInfo myTimer, ILogger log, Microsoft.Azure.WebJobs.ExecutionContext executionContext)
         {
             string SpreadsheetId = Environment.GetEnvironmentVariable("SPREADSHEET_ID");
             
@@ -57,8 +58,6 @@ namespace com.beckshome.function
             var values = response.Values;
 
             StringBuilder sb = new StringBuilder();
-            // Trigger times and dates represented in EST
-            TimeZoneInfo estZone = TimeZoneConverter.TZConvert.GetTimeZoneInfo("Eastern Standard Time");
             if (values != null && values.Count > 0)
             {
                 foreach(var (row, index) in values.WithIndex())
@@ -80,9 +79,8 @@ namespace com.beckshome.function
                         UpdateProcessedDetails(SpreadsheetId, updater, sid);
                     }
                 }
-                //sb.Append($"\n Trigger date: {DateTime.Parse(row[0].ToString()).Date}");
+                // Time logging
                 sb.Append($"\n System date: {(TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, estZone)).Date}");
-                //sb.Append($"\n Trigger time: {DateTime.Parse(row[1].ToString()).TimeOfDay}");
                 sb.Append($"\n System time: {(TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, estZone)).TimeOfDay}");
                 return(sb.ToString());
             }
@@ -102,7 +100,7 @@ namespace com.beckshome.function
             var range = rowToUpdate;
             var valueRange = new ValueRange();
 
-            var objectList = new List<object>() { DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt") + $" SID: {sid}"};
+            var objectList = new List<object>() { TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, estZone).ToString("MM/dd/yyyy hh:mm:ss tt") + $" SID: {sid}"};
             valueRange.Values = new List<IList<object>> { objectList };
 
             var updateRequest = service.Spreadsheets.Values.Update(valueRange, SpreadsheetId, range);
