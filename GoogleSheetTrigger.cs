@@ -57,6 +57,8 @@ namespace com.beckshome.function
             var values = response.Values;
 
             StringBuilder sb = new StringBuilder();
+            // Trigger times and dates represented in EST
+            TimeZoneInfo estZone = TimeZoneConverter.TZConvert.GetTimeZoneInfo("Eastern Standard Time");
             if (values != null && values.Count > 0)
             {
                 foreach(var (row, index) in values.WithIndex())
@@ -65,15 +67,11 @@ namespace com.beckshome.function
                     // Conditional logic: (1) not header; (2) today; (3) in past; (4) not yet processed
                     if (
                             row[0].ToString().ToUpper() != "DATE" &&
-                            TimeZoneInfo.ConvertTimeToUtc(DateTime.Parse(row[0].ToString()).Date) == TimeZoneInfo.ConvertTimeToUtc(DateTime.Now.Date) &&
-                            TimeZoneInfo.ConvertTimeToUtc(DateTime.Parse(row[1].ToString())).TimeOfDay < TimeZoneInfo.ConvertTimeToUtc(DateTime.Now).TimeOfDay &&
+                            DateTime.Parse(row[0].ToString()).Date == (TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, estZone)).Date &&
+                            DateTime.Parse(row[1].ToString()).TimeOfDay < (TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, estZone)).TimeOfDay &&
                             row[5].ToString().ToUpper() == "FALSE"
                         )
                     {
-                        sb.Append($"\n Trigger date: {TimeZoneInfo.ConvertTimeToUtc(DateTime.Parse(row[0].ToString()).Date)}");
-                        sb.Append($"\n System date: {TimeZoneInfo.ConvertTimeToUtc(DateTime.Now.Date)}");
-                        sb.Append($"\n Trigger time: {TimeZoneInfo.ConvertTimeToUtc(DateTime.Parse(row[1].ToString())).TimeOfDay}");
-                        sb.Append($"\n System time: {TimeZoneInfo.ConvertTimeToUtc(DateTime.Now).TimeOfDay}");
                         sb.Append($"\n*** {row[2]} to {row[3]} ***");
                         // Call the communication function to send the communications
                         string sid = SendCommunication(row[2].ToString(), row[3].ToString(), row[4].ToString());
@@ -82,6 +80,10 @@ namespace com.beckshome.function
                         UpdateProcessedDetails(SpreadsheetId, updater, sid);
                     }
                 }
+                //sb.Append($"\n Trigger date: {DateTime.Parse(row[0].ToString()).Date}");
+                sb.Append($"\n System date: {(TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, estZone)).Date}");
+                //sb.Append($"\n Trigger time: {DateTime.Parse(row[1].ToString()).TimeOfDay}");
+                sb.Append($"\n System time: {(TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, estZone)).TimeOfDay}");
                 return(sb.ToString());
             }
             else
