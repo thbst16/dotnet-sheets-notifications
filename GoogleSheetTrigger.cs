@@ -25,7 +25,7 @@ namespace com.beckshome.function
         
         // Azure trigger function to access Google sheets and process triggers
         [FunctionName("GoogleSheetTrigger")]
-        public static void Run([TimerTrigger("* */5 * * * *")]TimerInfo myTimer, ILogger log, Microsoft.Azure.WebJobs.ExecutionContext executionContext)
+        public static void Run([TimerTrigger("*/30 * * * * *")]TimerInfo myTimer, ILogger log, Microsoft.Azure.WebJobs.ExecutionContext executionContext)
         {
             string SpreadsheetId = Environment.GetEnvironmentVariable("SPREADSHEET_ID");
             
@@ -70,6 +70,10 @@ namespace com.beckshome.function
                             row[5].ToString().ToUpper() == "FALSE"
                         )
                     {
+                        sb.Append($"\n Trigger date: {TimeZoneInfo.ConvertTimeToUtc(DateTime.Parse(row[0].ToString()).Date)}");
+                        sb.Append($"\n System date: {TimeZoneInfo.ConvertTimeToUtc(DateTime.Now.Date)}");
+                        sb.Append($"\n Trigger time: {TimeZoneInfo.ConvertTimeToUtc(DateTime.Parse(row[1].ToString())).TimeOfDay}");
+                        sb.Append($"\n System time: {TimeZoneInfo.ConvertTimeToUtc(DateTime.Now).TimeOfDay}");
                         sb.Append($"\n*** {row[2]} to {row[3]} ***");
                         // Call the communication function to send the communications
                         string sid = SendCommunication(row[2].ToString(), row[3].ToString(), row[4].ToString());
