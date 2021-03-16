@@ -65,8 +65,8 @@ namespace com.beckshome.function
                     // Conditional logic: (1) not header; (2) today; (3) in past; (4) not yet processed
                     if (
                             row[0].ToString().ToUpper() != "DATE" &&
-                            DateTime.Parse(row[0].ToString()).Date == DateTime.Now.Date &&
-                            DateTime.Parse(row[1].ToString()).TimeOfDay < DateTime.Now.TimeOfDay &&
+                            TimeZoneInfo.ConvertTimeToUtc(DateTime.Parse(row[0].ToString()).Date) == TimeZoneInfo.ConvertTimeToUtc(DateTime.Now.Date) &&
+                            TimeZoneInfo.ConvertTimeToUtc(DateTime.Parse(row[1].ToString())).TimeOfDay < TimeZoneInfo.ConvertTimeToUtc(DateTime.Now).TimeOfDay &&
                             row[5].ToString().ToUpper() == "FALSE"
                         )
                     {
