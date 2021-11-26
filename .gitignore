@@ -76,6 +76,9 @@ artifacts/
 *.svclog
 *.scc
 
+# Linux binary files
+*.deb
+
 # Chutzpah Test files
 _Chutzpah*
 
