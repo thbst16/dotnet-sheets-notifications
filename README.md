@@ -24,6 +24,7 @@ The program requires specific configurations to work for your accounts and situa
 
 * **Google Sheets**
   * Spreadsheet Format - The spreadsheet must apply the exact headers shown in the image above: Date, Time, Type, Destination, Message, and Processed.
+  * Processing - Messages are processed as soon as the date / time passes for rows where the processed field is set to "FALSE". The processed field is updated by the program when the message is processed.
   * Message Types - The 3 types of message are: PHONE, SMS and EMAIL.
   * Spreadsheet Tab Name - Set to "TiggerList" using the static readonly variable 'sheet' in GoogleSheetTrigger.cs.
   * Spreadsheet ID - Set as a property in local.settings.json. The Google Sheets spreadsheet ID can be found in the Sheets URL.
@@ -33,6 +34,7 @@ The program requires specific configurations to work for your accounts and situa
   * Config Values - Configuration values stored in local.settings.json should be configured as Application Settings in Azure Functions.
 * **Code**
   * Spreadsheet Tab Name - As mentioned earlier, the spreadsheet tab name can be set using the static readonly variable 'sheet' in GoogleSheetTrigger.cs.
+  * Timing - The timing is set staticly in a TimerTrigger CronTab value.
   * Time Zones - Processing times are currently set in EST. Times are baselined to UTC and can be set to your timezone with the static variable estZone in GoogleSheetTrigger.cs. Timezone settings are platform agnostic -- either Windows (e.g. "Eastern Standard Time") or IANA settings (e.g. "America/New York") can be used.
 * **Subscriptions**
   * Accounts - Active Azure, Twilio and SendGrid subscriptions and credentials are required. Trial accounts will work for this purpose.
