@@ -19,6 +19,8 @@ stages:
         command: build
         containerRegistry: dockerHub
         repository: thbst16/azure-function-notification
+        tags: |
+         latest
     - task: Docker@2
       displayName: Push the image to Dockerhub
       inputs:
