@@ -187,7 +187,7 @@ namespace dotnet_sheets_notifications
             else if (type.ToUpper() == "PHONE")
             {
                 var call = CallResource.Create(
-                    twiml: new Twilio.Types.Twiml($"<Response><Say>{message}</Say></Response>"),
+                    twiml: new Twilio.Types.Twiml("<Response><Say voice=\"Polly.Joanna-Neural\"><break time=\"600ms\"/>{message}<break time=\"600ms\"/></Say></Response>"),
                     to: new Twilio.Types.PhoneNumber(destination),
                     from: new Twilio.Types.PhoneNumber(smsSettings.FromNumber)
                 );
