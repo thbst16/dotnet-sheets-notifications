@@ -20,7 +20,8 @@ stages:
         containerRegistry: dockerHub
         repository: thbst16/azure-function-notification
         tags: |
-         latest
+          $(Build.BuildId)    
+          latest
     - task: Docker@2
       displayName: Push the image to Dockerhub
       inputs:
@@ -28,4 +29,5 @@ stages:
        containerRegistry: dockerHub
        repository: thbst16/azure-function-notification
        tags: |
+         $(Build.BuildId)
          latest
