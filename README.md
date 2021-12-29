@@ -1,6 +1,6 @@
 # dotnet-sheets-notifications
 
-[![Build Status](https://beckshome.visualstudio.com/azure-function-notification/_apis/build/status/thbst16.azure-function-notification?branchName=main)](https://beckshome.visualstudio.com/azure-function-notification/_build/latest?definitionId=8&branchName=main)
+[![Build Status](https://beckshome.visualstudio.com/dotnet-sheets-notifications/_apis/build/status/thbst16.dotnet-sheets-notifications?branchName=main)](https://beckshome.visualstudio.com/dotnet-sheets-notifications/_build/latest?definitionId=9&branchName=main)
 
 A solution to automate the sending of notifications on a set schedule. The solution makes use of the following technologies:
 
