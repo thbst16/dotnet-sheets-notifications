@@ -13,7 +13,7 @@ stages:
   - job: Build
     displayName: 'Build and push docker image'
     pool:
-      vmImage: $(vmImageName)
+      vmImage: $(vmImage)
 
     steps:
     - task: Docker@2
