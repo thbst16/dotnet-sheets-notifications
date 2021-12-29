@@ -7,19 +7,21 @@ pool:
 
 stages:
 - stage: Build
-  displayName: 'Build image'
+  displayName: Build image
 
   jobs:
   - job: Build
-    displayName: 'Build and push docker image'
+    displayName: Build and push docker image
     steps:
     - task: Docker@2
-      displayName: 'Build the docker image'
+      displayName: Build the docker image
       inputs:
         command: build
     - task: Docker@2
-      displayName: 'Push the image to Dockerhub'
+      displayName: Push the image to Dockerhub
       inputs:
        command: push
        containerRegistry: dockerHub
-       repository: azure-function-notification
+       repository: thbst16/azure-function-notification
+       tags: |
+         latest
