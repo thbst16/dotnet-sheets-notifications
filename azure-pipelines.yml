@@ -25,3 +25,5 @@ stages:
        command: push
        containerRegistry: dockerHub
        repository: thbst16/azure-function-notification
+       tags: |
+         latest
