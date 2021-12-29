@@ -7,16 +7,16 @@ pool:
 
 stages:
 - stage: Build
-  displayName: Build image
+  displayName: 'Build image'
 
   jobs:
   - job: Build
-    displayName: Build and push docker image
+    displayName: 'Build and push docker image'
     pool:
       vmImage: $(vmImageName)
 
     steps:
     - task: Docker@2
-      displayName: Build the docker image
+      displayName: 'Build the docker image'
       inputs:
         command: build
