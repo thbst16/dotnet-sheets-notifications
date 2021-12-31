@@ -1,4 +1,4 @@
-@host = http://localhost:5000
+@host = http://localhost:80
 @contentType = application/json
 
 GET {{host}}/health HTTP/1.1
