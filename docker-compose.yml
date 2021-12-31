@@ -5,5 +5,5 @@ services:
     ports:
       - "80:80"
     volumes:
-      - /workspaces/azure-function-notification/appsettings.json:/app/appsettings.json
-      - /workspaces/azure-function-notification/client_secrets.json:/app/client_secrets.json
+      - azure-mount:/app/appsettings.json
+      - azure-mount:/app/client_secrets.json
