@@ -5,5 +5,5 @@ services:
     ports:
       - "80:80"
     volumes:
-      - azure-mount:/app/appsettings.json
-      - azure-mount:/app/client_secrets.json
+      - azure-mount:/azure/appsettings.json
+      - azure-mount:/azure/client_secrets.json
