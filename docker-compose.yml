@@ -2,6 +2,8 @@ version: "3.9"
 services:
   app:
     image: thbst16/azure-function-notification
+    ports:
+      - "5000:80"
     volumes:
       - /workspaces/azure-function-notification/appsettings.json:/app/appsettings.json
       - /workspaces/azure-function-notification/client_secrets.json:/app/client_secrets.json

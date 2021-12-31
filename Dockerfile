@@ -15,7 +15,7 @@ COPY client_secrets-sample.json client_secrets.json
 RUN dotnet build -c Release -o output
 
 # Build runtime image. Note use of runtime version of core image to reduce size of final image
-FROM mcr.microsoft.com/dotnet/runtime:5.0 AS runtime-env
+FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS runtime-env
 WORKDIR /app
 COPY --from=build-env app/output .
 
