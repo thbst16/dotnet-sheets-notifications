@@ -47,7 +47,17 @@ stages:
     - task: CmdLine@2
       inputs:
         script: dir
-        workingDirectory: $(workingDirectory)  
+        workingDirectory: $(Agent.TempDirectory)
+    - task: CopyFiles@2
+      inputs:
+        SourceFolder: $(Agent.TempDirectory)
+        contents: '*' 
+        targetFolder: $(workingDirectory)
+    - task: CmdLine@2
+      inputs:
+        script: dir
+        workingDirectory: $(workingDirectory) 
+        
     - task: AzureWebAppContainer@1
       displayName: Deploy the docker image
       inputs:
