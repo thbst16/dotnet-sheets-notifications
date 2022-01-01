@@ -37,7 +37,7 @@ namespace dotnet_sheets_notifications
         {
             // Setup and retrieve basic job settings
             IConfiguration config = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json")
+                .AddJsonFile("config/appsettings.json")
                 .AddEnvironmentVariables()
                 .Build();
 
@@ -60,7 +60,7 @@ namespace dotnet_sheets_notifications
             GoogleCredential credential;
             
             // Setup Access for Sheets Service
-            using (var stream = new FileStream("client_secrets.json", FileMode.Open, FileAccess.Read))
+            using (var stream = new FileStream("config/client_secrets.json", FileMode.Open, FileAccess.Read))
             {
                 credential = GoogleCredential.FromStream(stream)
                     .CreateScoped(Scopes);
@@ -94,7 +94,7 @@ namespace dotnet_sheets_notifications
         static string ProcessTriggers(SheetsService service, string sheet, string spreadsheetId){
             // Setup and retrieve basic job settings
             IConfiguration config = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json")
+                .AddJsonFile("config/appsettings.json")
                 .AddEnvironmentVariables()
                 .Build();
 
@@ -169,7 +169,7 @@ namespace dotnet_sheets_notifications
         {
             // Setup and retrieve communications settings
             IConfiguration config = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json")
+                .AddJsonFile("config/appsettings.json")
                 .AddEnvironmentVariables()
                 .Build();
             EmailSettings emailSettings = config.GetRequiredSection("Sendgrid").Get<EmailSettings>();
