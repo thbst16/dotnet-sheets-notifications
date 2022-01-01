@@ -23,7 +23,7 @@ namespace dotnet_sheets_notifications
                     var parentDir = Directory.GetParent(hostingContext.HostingEnvironment.ContentRootPath);
                     var appSeetingsPath = string.Concat(env.ContentRootPath, "/config/appsettings.json");
                     config.AddJsonFile(appSeetingsPath, optional: false, reloadOnChange: true);
-                    var clientSecretsPath = string.Concat(env.ContentRootPath, "/config/client_secrets-sample.json");
+                    var clientSecretsPath = string.Concat(env.ContentRootPath, "/config/client_secrets.json");
                     config.AddJsonFile(clientSecretsPath, optional: false, reloadOnChange: true);
                     IConfigurationRoot configurationRoot = config.Build();
                 });
