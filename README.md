@@ -30,16 +30,23 @@ The program requires specific configurations to work for your accounts and situa
   * Spreadsheet Format - The spreadsheet must apply the exact headers shown in the image above: Date, Time, Type, Destination, Message, and Processed.
   * Processing - Messages are processed as soon as the date / time passes for rows where the processed field is set to "FALSE". The processed field is updated by the program when the message is processed.
   * Message Types - The 3 types of message are: PHONE, SMS and EMAIL.
-  * Spreadsheet Tab Name - Set to "TiggerList" using the static readonly variable 'sheet' in GoogleSheetTrigger.cs.
-  * Spreadsheet ID - Set as a property in local.settings.json. The Google Sheets spreadsheet ID can be found in the Sheets URL.
+  * Spreadsheet Tab Name - Set to "TiggerList" using the static readonly variable 'Google.Sheet' in appsettings.json.
+  * Spreadsheet ID - Set as a property in appsettings.json. The Google Sheets spreadsheet ID can be found in the Sheets URL.
   * Permissions - Permissions need to be granted to a service account to update the spreadsheet. This access then needs to be exported as a client_secrets.json file from Google Sheets and imported into the project.
 * **Azure**
-  * Google Secrets - The Google client_secrets.json file should not be shared or made publicly accessible. This can be shared as a Secure File in Azure DevOps and accessed using the DownloadSecureFile task.
-  * Config Values - Configuration values stored in appsettings.json and are available through dynamic configuration in the progra.
+  * Google Secrets - The Google client_secrets.json and appsettings files should not be shared or made publicly accessible. These can be stored as static secrets (I use Azure Blob storage) and mounted via mappings in the docker-compose.yml.
+  * Config Values - Configuration values stored in appsettings.json and are available through dynamic configuration in the program.
 * **Code**
   * Spreadsheet Tab Name - As mentioned earlier, the spreadsheet tab name can be set using the static readonly variable 'sheet' in GoogleSheetTrigger.cs.
-  * Timing - The timing is set staticly in a TimerTrigger CronTab value.
-  * Time Zones - Processing times are currently set in EST. Times are baselined to UTC and can be set to your timezone with the static variable estZone in GoogleSheetTrigger.cs. Timezone settings are platform agnostic -- either Windows (e.g. "Eastern Standard Time") or IANA settings (e.g. "America/New York") can be used.
+  * Timing - The timing is set staticly in a Quartz.SheetsNotificationJob CronTab value.
+  * Time Zones - Processing times are currently set in EST (not currently configurable). Times are baselined to UTC and can be set to your timezone with the static variable estZone in GoogleSheetTrigger.cs. Timezone settings are platform agnostic -- either Windows (e.g. "Eastern Standard Time") or IANA settings (e.g. "America/New York") can be used.
 * **Subscriptions**
   * Accounts - Active Azure, Twilio and SendGrid subscriptions and credentials are required. Trial accounts will work for this purpose.
   * Credentials - Subscription credentials are stored in the appsettings.json file (locally) or Application Settings in Azure
+
+# Motivation and Credits
+
+I would not have got this project completed without the vast knowledge of experienced peers at my disposal. Referenced below are items that were specifically helpful with specific functional attributes of the solution.
+* [Using Azure File Storage As Container Volume Mounts](https://baldbeardedbuilder.com/blog/using-azure-file-storage-as-container-volume-mounts-in-app-services/)
+* [Google Sheets and Dotnet Core with C#](https://www.youtube.com/watch?v=afTiNU6EoA8)
+* [Using Quartz.NET with ASP.NET Core](https://andrewlock.net/using-quartz-net-with-asp-net-core-and-worker-services/)
