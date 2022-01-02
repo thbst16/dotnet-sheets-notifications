@@ -1,10 +1,8 @@
+// VS Code REST Client Required to Execute HTTP Tests
 @host = http://localhost:5000
 @contentType = application/json
 
-GET {{host}}/health HTTP/1.1
-Content-Type: {{contentType}}
-
-###
-
 GET {{host}} HTTP/1.1
 Content-Type: {{contentType}} 
+
+###

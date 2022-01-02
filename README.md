@@ -8,15 +8,10 @@ User-friendly solution for scheduling and receiving notifications for daily even
 
 ![Notification Triggers Sheet](https://s3.amazonaws.com/s3.beckshome.com/20210316-notification-triggers-sheet.jpg)
 
-# Process
+# Functional Flow
 The dotnet-sheets-notifications solution orchestrates the integration of services to support the sending of automated messages, as illustrated in the figure below.
 
-![Notification Flow](https://s3.amazonaws.com/s3.beckshome.com/20210316-azure-notification-flow.jpg)
-
-The Google Sheet stores the triggers for SMS text messages, phone calls and emails in a standard format that must be followed to be processed by the program in Docker. This format is illustrated in the image of the spreadsheet below with specific column and tab names and example trigger data.
-
-
-
+![Notification Flow](https://s3.amazonaws.com/s3.beckshome.com/20220102-dotnet-sheets-notifications-functional.jpg)
 # Configuration
 
 The program requires specific configurations to work for your accounts and situation. The highlights of these configurations are covered below.
