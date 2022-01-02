@@ -1,22 +1,21 @@
 # dotnet-sheets-notifications
 
 [![Build Status](https://beckshome.visualstudio.com/dotnet-sheets-notifications/_apis/build/status/thbst16.dotnet-sheets-notifications?branchName=main)](https://beckshome.visualstudio.com/dotnet-sheets-notifications/_build/latest?definitionId=9&branchName=main)
+![Docker Image Version (latest by date)](https://img.shields.io/docker/v/thbst16/azure-function-notification?logo=docker)
+![Uptime Robot ratio (7 days)](https://img.shields.io/uptimerobot/ratio/7/m790221273-210b408ec2755d217c4e5e5b?logo=http) 
 
-A solution to automate the sending of notifications on a set schedule. The solution makes use of the following technologies:
+User-friendly solution for scheduling and receiving notifications for daily events. Just plug in scheduled events using Google Sheets on the web. Phone calls, text messages and emails with the messages of your choice are scheduled and sent to the number / email address that you specify.
 
-* Docker Container - Employs a timer function to schedule and orchestrate the processing of the triggers.
-* Google Sheets - Holds the database of triggers and messages in an easily accessible and updatable format.
-* Twilio - Used for outgoing SMS, Phone and Email for notifications.
-* Sendgrid - Used for outbound email services.
+![Notification Triggers Sheet](https://s3.amazonaws.com/s3.beckshome.com/20210316-notification-triggers-sheet.jpg)
 
-# Functionality
+# Process
 The dotnet-sheets-notifications solution orchestrates the integration of services to support the sending of automated messages, as illustrated in the figure below.
 
 ![Notification Flow](https://s3.amazonaws.com/s3.beckshome.com/20210316-azure-notification-flow.jpg)
 
 The Google Sheet stores the triggers for SMS text messages, phone calls and emails in a standard format that must be followed to be processed by the program in Docker. This format is illustrated in the image of the spreadsheet below with specific column and tab names and example trigger data.
 
-![Notification Triggers Sheet](https://s3.amazonaws.com/s3.beckshome.com/20210316-notification-triggers-sheet.jpg)
+
 
 # Configuration
 
