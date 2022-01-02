@@ -12,6 +12,16 @@ User-friendly solution for scheduling and receiving notifications for daily even
 The dotnet-sheets-notifications solution orchestrates the integration of services to support the sending of automated messages, as illustrated in the figure below.
 
 ![Notification Flow](https://s3.amazonaws.com/s3.beckshome.com/20220102-dotnet-sheets-notifications-functional.jpg)
+
+# Notional Architecture
+The figure bellow represents the notional architecture of dotnet-sheets-notifications. The image is docker-based and therefore highly portable. The solution takes a number of dependencies on external services. These services are configured through configuration files (secrets) that are stored seperate from the container and bound at runtime.
+
+![Notification Flow](https://s3.amazonaws.com/s3.beckshome.com/20220102-dotnet-sheets-notifications-notional-architecture.jpg)
+
+Specific statistics and outputs of interest would be:
+* [Azure DevOps Build and Deploy Pipeline and Status](https://beckshome.visualstudio.com/dotnet-sheets-notifications/_build?definitionId=9)
+* [Docker Hub image repository for the Solution](https://hub.docker.com/repository/docker/thbst16/azure-function-notification)
+* [Public HTTP Health Check for the Solution](https://dotnet-sheets-notification.azurewebsites.net/)
 # Configuration
 
 The program requires specific configurations to work for your accounts and situation. The highlights of these configurations are covered below.
