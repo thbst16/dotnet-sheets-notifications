@@ -49,7 +49,7 @@ stages:
         script: dir
         workingDirectory: $(workingDirectory) 
     - task: AzureWebAppContainer@1
-      displayName: Deploy the docker image
+      displayName: Deploy the docker images
       inputs:
         azureSubscription: sheets-conn
         appName: dotnet-sheets-notification
