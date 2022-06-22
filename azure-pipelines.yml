@@ -51,6 +51,6 @@ stages:
     - task: AzureWebAppContainer@1
       displayName: Deploy the docker image
       inputs:
-        azureSubscription: sheets-connection
+        azureSubscription: sheets-conn
         appName: dotnet-sheets-notification
         multicontainerConfigFile: $(workingDirectory)/docker-compose.yml
