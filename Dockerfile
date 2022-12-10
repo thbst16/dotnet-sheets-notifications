@@ -1,5 +1,5 @@
 # use an official microsoft SDK as a parent image
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build-env
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build-env
 
 # set our working directory to /app
 WORKDIR /app
@@ -15,7 +15,7 @@ COPY config/client_secrets-sample.json /app/config/client_secrets.json
 RUN dotnet build -c Release -o output
 
 # Build runtime image. Note use of runtime version of core image to reduce size of final image
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS runtime-env
+FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS runtime-env
 WORKDIR /app
 COPY --from=build-env app/output .
 
